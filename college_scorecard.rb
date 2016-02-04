@@ -3,19 +3,58 @@ require 'pry'
 
 class ScoreCard
 
-  def search_file(attribute)
-    @contents.select do |row|
-      row[:instnm] if (row[:stabbr] == attribute)
+ attr_reader :contents, :max
+
+ def search_file(attribute)
+   @contents.select do |row|
+     row[:instnm] if (row[:stabbr] == attribute)
+   end
+ end
+
+ def open_file
+   @contents = CSV.open "./2013_college_scorecards.csv", headers: true, header_converters: :symbol
+ end
+
+ def get_colleges(state)
+   results = search_file(state)
+ end
+
+  def get_top_sal(num)
+    salaries_by_college = {}
+    @contents.each do |row|
+      salary = row[:avgfacsal].rjust(4, "0")
+      college = row[:instnm]
+      if salary == "NULL"
+        salary = "0000"
+      end
+    salaries_by_college[salary] = college
+    end
+    sorted = salaries_by_college.sort_by do |key, value|
+      key
+    end.last(num)
+    universities = sorted.map do |array|
+     array[1]
     end
   end
 
-  def open_file
-    @contents = CSV.open "./2013_college_scorecards.csv", headers: true, header_converters: :symbol
-  end
 
-  def get_colleges(state)
-    results = search_file(state)
-  end
+
 end
 
-binding.pry
+
+
+
+
+
+
+
+
+
+
+#  max = @contents.max(num) { |row_a, row_b| row_a[:avgfacsal]<=>row_b[:avgfacsal] }
+#  @max = max.select {|row| row[:instnm]}
+#  @max
+
+sc = ScoreCard.new
+sc.open_file
+puts sc.get_top_sal(3)
