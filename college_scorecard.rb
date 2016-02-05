@@ -22,17 +22,17 @@ class ScoreCard
   def get_top_sal(num)
     salaries_by_college = {}
     @contents.each do |row|
-      salary = row[:avgfacsal].rjust(4, "0")
+      salary = row[:avgfacsal].rjust(10, "0")
       college = row[:instnm]
       if salary == "NULL"
         salary = "0000"
       end
     salaries_by_college[salary] = college
     end
-    return_sorted(num, salaries_by_college)
+    return_sorted_sal(num, salaries_by_college).reverse
   end
 
-  def return_sorted(num, salaries_by_college)
+  def return_sorted_sal(num, salaries_by_college)
     sorted = salaries_by_college.sort_by do |key, value|
       key
     end.last(num)
@@ -40,17 +40,23 @@ class ScoreCard
       array[1]
     end
   end
+
+  def college_debt
+    debt_by_college = {}
+    @contents.each do |row|
+      debt = row[:grad_debt_mdn]
+      college = row[:instnm]
+      debt_by_college[debt] = college
+    end
+    debt_sorter(college_debt)
+  end
+
+  def debt_sorter(college_debt)
+    #key value pairs, with keys between 1500 - 2300
+
+  end
+
 end
-
-
-
-
-
-
-
-
-
-
 
 #  max = @contents.max(num) { |row_a, row_b| row_a[:avgfacsal]<=>row_b[:avgfacsal] }
 #  @max = max.select {|row| row[:instnm]}
@@ -58,4 +64,5 @@ end
 
 sc = ScoreCard.new
 sc.open_file
-puts sc.get_top_sal(3)
+# puts sc.get_top_sal(10)
+puts sc.debt
