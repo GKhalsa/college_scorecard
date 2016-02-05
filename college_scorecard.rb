@@ -5,19 +5,19 @@ class ScoreCard
 
  attr_reader :contents, :max
 
- def search_file(attribute)
-   @contents.select do |row|
-     row[:instnm] if (row[:stabbr] == attribute)
-   end
- end
+  def search_file(attribute)
+    @contents.select do |row|
+      row[:instnm] if (row[:stabbr] == attribute)
+    end
+  end
 
- def open_file
-   @contents = CSV.open "./2013_college_scorecards.csv", headers: true, header_converters: :symbol
- end
+  def open_file
+    @contents = CSV.open "./2013_college_scorecards.csv", headers: true, header_converters: :symbol
+  end
 
- def get_colleges(state)
-   results = search_file(state)
- end
+  def get_colleges(state)
+    results = search_file(state)
+  end
 
   def get_top_sal(num)
     salaries_by_college = {}
@@ -29,16 +29,17 @@ class ScoreCard
       end
     salaries_by_college[salary] = college
     end
+    return_sorted(num, salaries_by_college)
+  end
+
+  def return_sorted(num, salaries_by_college)
     sorted = salaries_by_college.sort_by do |key, value|
       key
     end.last(num)
     universities = sorted.map do |array|
-     array[1]
+      array[1]
     end
   end
-
-
-
 end
 
 
