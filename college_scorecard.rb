@@ -43,14 +43,14 @@ class ScoreCard
   end
 
   def debt_sorter(debt_by_college)
-    schools = debt_by_college.sort.to_h.find_all { |k,v| k.between?("1500", "1600") }
+    schools = debt_by_college.sort.to_h.find_all { |k, v| k.between?("1500", "1600") }
     format_schools_by_debt(schools)
   end
 
   def format_schools_by_debt(schools)
     list = schools.each { |debt, school| school }
                   .reverse
-                  .map { |debt, school| [school, debt] }
+                  .map { |debt, school| [school, debt].join(" ") }
   end
 end
 
