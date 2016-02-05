@@ -33,17 +33,17 @@ class ScoreCard
     universities = sorted.map { |array| array[1] }
   end
 
-  def college_debt
+  def college_debt(first_num, second_num)
     debt_by_college = {}
     @contents.each { |row| debt = row[:grad_debt_mdn]
                         college = row[:instnm]
           debt_by_college[debt] = college
                     }
-    debt_sorter(debt_by_college)
+    debt_sorter(debt_by_college, first_num, second_num)
   end
 
-  def debt_sorter(debt_by_college)
-    schools = debt_by_college.sort.to_h.find_all { |k, v| k.between?("1500", "1600") }
+  def debt_sorter(debt_by_college, first_num, second_num)
+    schools = debt_by_college.sort.to_h.find_all { |k, v| k.between?(first_num.to_s, second_num.to_s) }
     format_schools_by_debt(schools)
   end
 
@@ -61,4 +61,4 @@ end
 sc = ScoreCard.new
 sc.open_file
 # puts sc.get_top_sal(10)
-puts sc.college_debt
+puts sc.college_debt(1500, 1600)
