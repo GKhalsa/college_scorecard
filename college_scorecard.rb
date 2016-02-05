@@ -48,12 +48,13 @@ class ScoreCard
       college = row[:instnm]
       debt_by_college[debt] = college
     end
-    debt_sorter(college_debt)
+    debt_sorter(debt_by_college)
   end
 
-  def debt_sorter(college_debt)
-    #key value pairs, with keys between 1500 - 2300
-
+  def debt_sorter(debt_by_college)
+    sorted = debt_by_college.find_all do |k,v|
+      k.to_i.between?(1500, 2300)
+    end
   end
 
 end
@@ -65,4 +66,4 @@ end
 sc = ScoreCard.new
 sc.open_file
 # puts sc.get_top_sal(10)
-puts sc.debt
+puts sc.college_debt
